@@ -1,3 +1,5 @@
+from datacenter.models import Schoolkid, Mark, Chastisement, Lesson, Commendation, Subject
+
 
 def fix_marks(schoolkid):
     Mark.objects.filter(schoolkid=schoolkid).filter(points__lt=4).update(points=4)
