@@ -35,11 +35,17 @@ def remove_chastisement(schoolkid):
 def create_commendation(schoolkid_full_name, subject_name):
     child = get_schoolkid(schoolkid_full_name)
     child_lessons = Lesson.objects.filter(group_letter=child.group_letter, year_of_study=child.year_of_study)
-    subject = Subject.objects.filter(title=subject_name).get(year_of_study=child.year_of_study)
-    last_lesson = child_lessons.filter(subject__title=subject_name).order_by('-date').first()
-    lesson_teacher = last_lesson.teacher
-    if child_lessons is None or last_lesson is None or lesson_teacher is None or subject is None:
+    if child_lessons is None:
         print('Got None, exit.')
         return
+    subject = Subject.objects.filter(title=subject_name).get(year_of_study=child.year_of_study)
+    if subject is None:
+        print('Got None, exit.')
+        return
+    last_lesson = child_lessons.filter(subject__title=subject_name).order_by('-date').first()
+    if last_lesson is None:
+        print('Got None, exit.')
+        return
+    lesson_teacher = last_lesson.teacher
     Commendation.objects.create(text=choice(COMMENDATION), created=last_lesson.date, schoolkid=child, subject=subject,
                                 teacher=lesson_teacher)
