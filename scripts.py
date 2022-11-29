@@ -38,5 +38,8 @@ def create_commendation(schoolkid_full_name, subject_name):
     subject = Subject.objects.filter(title=subject_name).get(year_of_study=child.year_of_study)
     last_lesson = child_lessons.filter(subject__title=subject_name).order_by('-date').first()
     lesson_teacher = last_lesson.teacher
+    if child_lessons is None or last_lesson is None or lesson_teacher is None or subject is None:
+        print('Got None, exit.')
+        return
     Commendation.objects.create(text=choice(COMMENDATION), created=last_lesson.date, schoolkid=child, subject=subject,
                                 teacher=lesson_teacher)
