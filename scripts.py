@@ -24,11 +24,13 @@ def get_schoolkid(schoolkid_full_name):
 
 
 def fix_marks(schoolkid):
-    Mark.objects.filter(schoolkid=get_schoolkid(schoolkid)).filter(points__lt=4).update(points=4)
+    child = get_schoolkid(schoolkid)
+    Mark.objects.filter(schoolkid=child).filter(points__lt=4).update(points=4)
 
 
 def remove_chastisement(schoolkid):
-    child_chastisements = Chastisement.objects.filter(schoolkid=get_schoolkid(schoolkid))
+    child = get_schoolkid(schoolkid)
+    child_chastisements = Chastisement.objects.filter(schoolkid=child)
     child_chastisements.delete()
 
 
